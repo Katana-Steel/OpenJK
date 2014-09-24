@@ -951,6 +951,7 @@ typedef struct trGlobals_s {
 
 	qboolean				worldMapLoaded;
 	world_t					*world;
+	char					worldDir[MAX_QPATH];		// ie: maps/tim_dm2 (copy of world_t::name sans extension but still includes the path)
 
 	const byte				*externalVisData;	// from RE_SetWorldVisData, shared with CM_Load
 
@@ -1372,9 +1373,6 @@ shader_t *R_FindShaderByName( const char *name );
 void		R_InitShaders(qboolean server);
 void		R_ShaderList_f( void );
 void    R_RemapShader(const char *oldShader, const char *newShader, const char *timeOffset);
-//rwwRMG: Added:
-qhandle_t	R_GetShaderByNum(int index, world_t &worldData);
-qhandle_t	R_CreateBlendedShader(qhandle_t a, qhandle_t b, qhandle_t c, bool surfaceSprites );
 
 
 /*
@@ -1780,12 +1778,6 @@ typedef enum {
 } renderCommand_t;
 
 
-// these are sort of arbitrary limits.
-// the limits apply to the sum of all scenes in a frame --
-// the main view, all the 3D icons, etc
-#define	MAX_POLYS		600
-#define	MAX_POLYVERTS	3000
-
 // all of the information needed by the back end must be
 // contained in a backEndData_t.
 typedef struct backEndData_s {
@@ -1829,7 +1821,6 @@ Ghoul2 Insert Start
 void		Multiply_3x4Matrix(mdxaBone_t *out, mdxaBone_t *in2, mdxaBone_t *in);
 extern qboolean R_LoadMDXM (model_t *mod, void *buffer, const char *name, qboolean &bAlreadyCached );
 extern qboolean R_LoadMDXA (model_t *mod, void *buffer, const char *name, qboolean &bAlreadyCached );
-bool LoadTGAPalletteImage ( const char *name, byte **pic, int *width, int *height);
 void		RE_InsertModelIntoHash(const char *name, model_t *mod);
 /*
 Ghoul2 Insert End

@@ -290,8 +290,6 @@ void CL_Disconnect_f (void);
 void CL_Vid_Restart_f( void );
 void CL_Snd_Restart_f (void);
 
-void CL_NextDemo( void );
-
 qboolean CL_CheckPaused(void);
 
 //
@@ -372,6 +370,10 @@ void	SCR_DrawBigStringColor( int x, int y, const char *s, vec4_t color, qboolean
 void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean noColorEscape );
 void	SCR_DrawBigChar( int x, int y, int ch );
 void	SCR_DrawSmallChar( int x, int y, int ch );
+
+#ifdef JK2_MODE
+void	SCR_PrecacheScreenshot();
+#endif
 
 //
 // cl_cin.c

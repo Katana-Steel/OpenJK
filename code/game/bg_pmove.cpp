@@ -170,7 +170,7 @@ const float	pm_friction = 6.0f;
 const float	pm_waterfriction = 1.0f;
 const float	pm_flightfriction = 3.0f;
 
-const float	pm_frictionModifier	= 3.0f;	//Used for "careful" mode (when pressing use)
+//const float	pm_frictionModifier	= 3.0f;	//Used for "careful" mode (when pressing use)
 const float pm_airDecelRate = 1.35f;	//Used for air decelleration away from current movement velocity
 
 int	c_pmove = 0;
@@ -3496,9 +3496,12 @@ static void PM_CrashLandDamage( int damage )
 			damage = 1000;
 			dflags |= DAMAGE_DIE_ON_IMPACT;
 		}
-		else if ( !(pm->gent->flags&FL_NO_IMPACT_DMG) )
+		else
 		{
 			damage = PM_DamageForDelta( damage );
+
+			if ( (pm->gent->flags&FL_NO_IMPACT_DMG) )
+				return;
 		}
 
 		if ( damage )

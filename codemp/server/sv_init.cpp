@@ -860,8 +860,6 @@ static void SV_InitRef( void ) {
 	ri.CM_PointLeafnum = CM_PointLeafnum;
 	ri.CM_PointContents = CM_PointContents;
 	ri.Com_TheHunkMarkHasBeenMade = Com_TheHunkMarkHasBeenMade;
-	ri.SV_GetConfigstring = SV_GetConfigstring;
-	ri.SV_SetConfigstring = SV_SetConfigstring;
 //	ri.S_RestartMusic = S_RestartMusic;
 //	ri.SND_RegisterAudio_LevelLoadEnd = SND_RegisterAudio_LevelLoadEnd;
 //	ri.CIN_RunCinematic = CIN_RunCinematic;
@@ -971,11 +969,16 @@ void SV_Init (void) {
 
 	sv_blockJumpSelect = Cvar_Get( "sv_blockJumpSelect", "1", CVAR_ARCHIVE );
 
+	sv_banFile = Cvar_Get( "sv_banFile", "serverbans.dat", CVAR_ARCHIVE );
+
 	// initialize bot cvars so they are listed and can be set before loading the botlib
 	SV_BotInitCvars();
 
 	// init the botlib here because we need the pre-compiler in the UI
 	SV_BotInitBotLib();
+
+	// Load saved bans
+	Cbuf_AddText("sv_rehashbans\n");
 
 	// Only allocated once, no point in moving it around and fragmenting
 	// create a heap for Ghoul2 to use for game side model vertex transforms used in collision detection

@@ -226,7 +226,9 @@ static void SV_MapTransition_f(void)
 {		
 	const char	*spawntarget;
 
-//	SCR_PrecacheScreenshot();
+#ifdef JK2_MODE
+	SCR_PrecacheScreenshot();
+#endif
 	SV_Player_EndOfLevelSave();
 
 	spawntarget = Cmd_Argv(2);
@@ -250,13 +252,18 @@ Restart the server on a different map, but clears a cvar so that typing "map bla
 player weapons/ammo/etc from the previous level that you haven't really exited (ie ignores KEEP_PREV on spawn points)
 ==================
 */
+#ifdef JK2_MODE
+extern void SCR_UnprecacheScreenshot();
+#endif
 static void SV_Map_f( void ) 
 {
 	Cvar_Set( sCVARNAME_PLAYERSAVE, "");
 	Cvar_Set( "spawntarget", "" );
 	Cvar_Set("tier_storyinfo", "0");
 	Cvar_Set("tiers_complete", "");
-//	SCR_UnprecacheScreenshot();
+#ifdef JK2_MODE
+	SCR_UnprecacheScreenshot();
+#endif
 
 	ForceReload_e eForceReload = eForceReload_NOTHING;	// default for normal load
 
@@ -282,6 +289,9 @@ static void SV_Map_f( void )
 		// then cheats will be allowed
 		Cvar_Set( "helpUsObi", cheat ? "1" : "0" );
 	}
+#ifdef JK2_MODE
+	Cvar_Set( "cg_missionstatusscreen", "0" );
+#endif
 }
 
 /*
@@ -301,7 +311,9 @@ void SV_LoadTransition_f(void)
 
 	qbLoadTransition = qtrue;
 
-//	SCR_PrecacheScreenshot();
+#ifdef JK2_MODE
+	SCR_PrecacheScreenshot();
+#endif
 	SV_Player_EndOfLevelSave();
 
 	//Save the full current state of the current map so we can return to it later

@@ -16,8 +16,7 @@ This file is part of Jedi Academy.
 */
 // Copyright 2001-2013 Raven Software
 
-#ifndef __TR_PUBLIC_H
-#define __TR_PUBLIC_H
+#pragma once
 
 #include "tr_types.h"
 #include "../qcommon/qcommon.h"
@@ -30,7 +29,7 @@ This file is part of Jedi Academy.
 #include "../win32/win_local.h"
 #endif
 
-#define	REF_API_VERSION		12
+#define	REF_API_VERSION		13
 
 typedef struct {
 	void				(QDECL *Printf)						( int printLevel, const char *fmt, ...) __attribute__ ((format (printf, 2, 3)));
@@ -91,9 +90,6 @@ typedef struct {
 	int					(*CIN_PlayCinematic)				( const char *arg0, int xpos, int ypos, int width, int height, 
 															int bits, const char *psAudioFile /* = NULL */ );
 	void				(*CIN_UploadCinematic)				( int handle );
-
-	void				(*SV_GetConfigstring)				( int index, char *buffer, int bufferSize );
-	void				(*SV_SetConfigstring)				( int index, const char *value );
 
 #ifdef _WIN32
 	WinVars_t *			(*GetWinVars)						( void ); //g_wv
@@ -210,6 +206,11 @@ typedef struct {
 
 	// for use with save-games mainly...
 	void	(*GetScreenShot)(byte *data, int w, int h);
+	
+#ifdef JK2_MODE
+	size_t	(*SaveJPGToBuffer)(byte *buffer, size_t bufSize, int quality, int image_width, int image_height, byte *image_buffer, int padding );
+	void	(*LoadJPGFromBuffer)( byte *inputBuffer, size_t len, byte **pic, int *width, int *height );
+#endif
 
 	// this is so you can get access to raw pixels from a graphics format (TGA/JPG/BMP etc), 
 	//	currently only the save game uses it (to make raw shots for the autosaves)
@@ -374,11 +375,8 @@ typedef struct {
 	void		(*G2Time_ReportTimers)(void);
 } refexport_t;
 
-
 // this is the only function actually exported at the linker level
 // If the module can't init to a valid rendering state, NULL will be
 // returned.
 
 typedef	refexport_t* (QDECL *GetRefAPI_t) (int apiVersion, refimport_t *rimp);
-
-#endif	// __TR_PUBLIC_H
